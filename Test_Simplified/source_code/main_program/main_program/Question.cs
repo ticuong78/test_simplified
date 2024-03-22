@@ -8,49 +8,11 @@ using System.Threading.Tasks;
 
 namespace main_program
 {
-    class Question: IEnumerable
+    class Question: Options
     {
         public string MainQuestion { get; set; }
-        public List<string> Options { get; set; } = new List<string>();
 
         public Question() { }
-
-        /// <summary>
-        /// Use to add the main question into the object if the object is created by using no-parameter constructor. Should be used along with AddOptions method, or you cannot use any further of its composite methods
-        /// </summary>
-        /// <param name="question"></param>
-        public void AddMainQuestion(string question)
-        {
-            MainQuestion = question;
-        }
-
-        /// <summary>
-        /// Should be use along with AddMainQuestion method, use AddMainQuestion method for how-to-use guide
-        /// </summary>
-        /// <param name="option"></param>
-        public void AddOptions(string option)
-        {
-            if (option.Contains("   "))
-            {
-                string[] strings = option.Split("   ");
-                foreach (string smallString in strings)
-                {
-                    Options.Add(smallString.Trim());
-                }
-            }
-            else
-                Options.Add(option);
-        }
-
-        public void AddOptions(List<string> options)
-        {
-            Options.AddRange(options);
-        }
-
-        public void AddOptions(string[] options)
-        {
-            Options.AddRange(options);
-        }
 
         public Question(List<string> sentences)
         {
@@ -58,35 +20,28 @@ namespace main_program
             MainQuestion = sentences[0];
             foreach(var item in sentences)
             {
-                Options.Add(item);
+                OptionsList.Add(item);
             }
         }
 
-        /// <summary>
-        /// Return the total length of all object's composite elements, including the main question
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">If there is no more than 2 options are passed in</exception>
-        public int GetLength()
+        public void AddMainQuestion(string question)
         {
-            if (MainQuestion is null && Options.Count < 2) throw new ArgumentException("Main question and at least 2 options are required.");
-            return Options.Count;
+            MainQuestion = question;
         }
 
         public override string ToString()
         {
+            if(MainQuestion is null && OptionsList.Count != 4)
+            {
+                throw new ArgumentNullException("A question must has one main question and 4 options, please check good. Use AddMainQuestion or AddOption to fill in a Question instance");
+            }
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(MainQuestion);
-            foreach (var item in Options)
+            foreach (var item in OptionsList)
             {
                 sb.AppendLine(item);
             }
             return sb.ToString();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return ((IEnumerable)Options).GetEnumerator();
         }
     }
 }

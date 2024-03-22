@@ -26,13 +26,7 @@ namespace main_program
 
                 IEnumerable<OpenXmlElement> rawOpenXmlElementList = body.Elements(); //no mention
 
-                /*int i = 0;
-                foreach(OpenXmlElement openXmlElement in rawOpenXmlElementList)
-                {
-                    Console.WriteLine("{0}: {1}", ++i, openXmlElement);
-                }*/
-
-                ConvertQuestions convertQuestions = new ConvertQuestions(rawOpenXmlElementList);
+                Process convertQuestions = new Process(rawOpenXmlElementList);
 
                 convertQuestions.DisplayElement();
 
